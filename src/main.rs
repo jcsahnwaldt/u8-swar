@@ -20,10 +20,14 @@ fn get_input() -> String {
 use std::num::Wrapping;
 
 fn make_u8(s: &str) -> Option<u8> {
+    let ints = s.chars().map(|c| c as u32).collect::<Vec<u32>>();
+    let bytes = s.as_bytes();
+    println!("{:x?}", ints);
+    println!("{:x?}", bytes);
+
     if s.is_empty() || s.len() > 3 {
         return None;
     }
-    let bytes = s.as_bytes();
 
     // using a union avoids branching on the length to initialize each byte
     // of the u32 interpretation. not sure it's better as it makes call to
@@ -39,6 +43,8 @@ fn make_u8(s: &str) -> Option<u8> {
         u.bytes[..s.len()].copy_from_slice(&bytes[..s.len()]);
         u.num
     };
+
+    println!("{:x?}", working);
 
     working ^= 0x30303030;
 
